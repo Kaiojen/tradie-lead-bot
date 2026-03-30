@@ -1,0 +1,15 @@
+.next
+.pytest_cache
+__pycache__
+.ruff_cache
+.venv
+node_modules
+coverage
+dist
+build
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.env
+*.log

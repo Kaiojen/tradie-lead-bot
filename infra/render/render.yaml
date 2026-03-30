@@ -1,0 +1,68 @@
+services:
+  - type: web
+    name: tradie-lead-bot-web
+    env: node
+    rootDir: apps/web
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+
+  - type: web
+    name: tradie-lead-bot-api
+    env: python
+    rootDir: .
+    buildCommand: pip install -r requirements/api.txt
+    startCommand: PYTHONPATH=. uvicorn apps.api.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PADDLE_WEBHOOK_SECRET
+        sync: false
+      - key: APP_ENCRYPTION_KEY
+        sync: false
+      - key: APP_HASH_KEY
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+
+  - type: worker
+    name: tradie-lead-bot-worker
+    env: python
+    rootDir: .
+    buildCommand: pip install -r requirements/worker.txt
+    startCommand: PYTHONPATH=. python3 -m apps.worker.app.main
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_MESSAGING_SERVICE_SID
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: APP_ENCRYPTION_KEY
+        sync: false
+      - key: APP_HASH_KEY
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
